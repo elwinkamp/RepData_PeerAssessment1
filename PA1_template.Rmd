@@ -5,21 +5,53 @@ output:
     keep_md: true
 ---
 
+**Data Processing**
+  
+  
+  ```{r}
+unzip(zipfile = "activity.zip")
+data <- read.csv("activity.csv")
 
-## Loading and preprocessing the data
+```
 
+**Mean and median:**
+  
+  ```{r}
+totalsteps <- tapply(data$steps, data$date, sum, na.rm=TRUE)
+summary(totalsteps, na.rm=TRUE)
+```
 
+**Histogram for number of steps per day:**
+  
+  ```{r}
+library(ggplot2)
+qplot(totalsteps, binwidth = 1000, xlab = "total no of steps per day")
 
-## What is mean total number of steps taken per day?
+```
 
+**Average daily activity pattern:**
+  
+  ```{r}
+stepsinterval <-aggregate(steps ~ interval, data = data, FUN = mean)
+plot(stepsinterval, type = "l")
 
+```
 
-## What is the average daily activity pattern?
+**Interval with max no. of steps:**
+  
+  ```{r}
+stepsinterval$interval[which.max(stepsinterval$steps)]
+```
 
+**Imputing missing values:**
 
+Total no. of missing values:
 
-## Imputing missing values
+  ```{r}
+sum(is.na(data))
+```
+  
+**Are there differences in activity patterns between weekdays and weekends?**
 
+//
 
-
-## Are there differences in activity patterns between weekdays and weekends?
